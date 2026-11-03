@@ -143,6 +143,8 @@ footer div{max-width:1284px;margin:auto;display:flex;justify-content:space-betwe
 .pal button.mk{position:relative}
 .pal button.mk::after{content:"★";position:absolute;right:-5px;top:-8px;font-size:.8rem;color:#d98a00;line-height:1}
 .reslist.b button{background:var(--amb-l);border-color:#d9a24a;color:var(--amb)}
+.labS{font-family:Manrope,sans-serif;font-weight:800;font-size:11px;fill:#10293b;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+@media(max-width:860px){.scene{height:auto;aspect-ratio:360/146;max-height:300px}.top h1{font-size:.86rem}.tally{font-size:.82rem}.top-in{gap:8px}.big{top:7px;left:12px}.big b{font-size:1.6rem}.big span{font-size:.74rem}}
 </style>
 </head>
 <body>
@@ -170,14 +172,18 @@ footer div{max-width:1284px;margin:auto;display:flex;justify-content:space-betwe
       <g id="camps"></g>
       <g class="flagG" id="flag"><line x1="0" y1="0" x2="0" y2="-30" stroke="#10293b" stroke-width="3" stroke-linecap="round"/><polygon class="wave" points="1,-30 25,-22 1,-13" fill="#c93a2b"/></g>
     </svg>
-    <svg id="strip" viewBox="0 0 360 150" preserveAspectRatio="xMidYMax slice" style="display:none">
-      <circle cx="300" cy="34" r="16" fill="#f7c95c"/>
-      <polygon points="0,150 0,128 340,28 360,150" fill="#6c97ae"/>
-      <polygon points="340,28 324,33 330,47 340,41 350,50 345,28" fill="#fff"/>
-      <polygon points="0,150 0,132 120,120 250,140 360,122 360,150" fill="#2f6554"/>
-      <path id="trailS" d="M18 128 L340 34" fill="none" stroke="#fff" stroke-width="2.5" stroke-dasharray="3 6" stroke-linecap="round"/>
-      <path id="doneS" class="done-trail" pathLength="100" stroke-dasharray="0 100" d="M18 128 L340 34" fill="none" stroke="#c93a2b" stroke-width="3.5" stroke-linecap="round"/>
-      <g class="flagG" id="flagS"><line x1="0" y1="0" x2="0" y2="-24" stroke="#10293b" stroke-width="2.5"/><polygon points="1,-24 19,-18 1,-11" fill="#c93a2b"/></g>
+    <svg id="strip" viewBox="0 -18 360 146" preserveAspectRatio="xMidYMid slice" style="display:none">
+      <circle cx="200" cy="12" r="15" fill="#f7c95c"/>
+      <polygon points="96,128 176,58 232,128" fill="#a7c5d6"/>
+      <polygon points="150,128 296,10 372,128" fill="#55809a"/>
+      <polygon points="296,10 372,128 318,128 300,84 318,52" fill="#3f6a84"/>
+      <polygon points="296,10 322,36 310,33 303,44 295,34 286,43 276,26" fill="#fff"/>
+      <polygon points="-4,128 -4,98 70,86 170,106 280,92 364,108 364,128" fill="#3f7a68"/>
+      <polygon points="-4,128 -4,116 120,110 250,122 364,114 364,128" fill="#2f6554"/>
+      <path id="trailS" d="M20 112 C62 112 96 106 132 102 S190 98 214 84 S262 72 266 56 S284 34 296 14" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="3 6" stroke-linecap="round"/>
+      <path id="doneS" class="done-trail" pathLength="100" stroke-dasharray="0 100" d="M20 112 C62 112 96 106 132 102 S190 98 214 84 S262 72 266 56 S284 34 296 14" fill="none" stroke="#e8402f" stroke-width="4.5" stroke-linecap="round"/>
+      <g id="campsS"></g>
+      <g class="flagG" id="flagS"><line x1="0" y1="0" x2="0" y2="-28" stroke="#10293b" stroke-width="3" stroke-linecap="round"/><polygon points="1,-28 23,-21 1,-13" fill="#e8402f" stroke="#fff" stroke-width="1"/></g>
     </svg>
   </aside>
   <div class="col"><section id="view"></section>
@@ -207,6 +213,8 @@ function place(id,pathId,f){const p=$(pathId);try{const L=p.getTotalLength();if(
 function camps(){const g=$('camps'),p=$('trail');let L;try{L=p.getTotalLength();}catch(e){return;}if(!L)return;
   const pts=[[0,'Base Camp',14,-8,'start'],[10/QS.length,'Ridge',-12,4,'end'],[16/QS.length,'High Camp',-12,4,'end']];
   g.innerHTML=pts.map(a=>{const t=p.getPointAtLength(L*a[0]);return '<circle cx="'+t.x+'" cy="'+t.y+'" r="6" fill="#fff" stroke="#10293b" stroke-width="2.5"/><text class="lab" x="'+(t.x+a[2])+'" y="'+(t.y+a[3])+'" text-anchor="'+a[4]+'">'+a[1]+'</text>';}).join('');}
+function campsS(){const g=$('campsS'),p=$('trailS');let L;try{L=p.getTotalLength();}catch(e){return;}if(!L)return;
+  g.innerHTML=[[0,'Base',6,-9,'start'],[10/QS.length,'Ridge',0,16,'middle'],[16/QS.length,'High Camp',0,-10,'middle']].map(a=>{const t=p.getPointAtLength(L*a[0]);return '<circle cx="'+t.x+'" cy="'+t.y+'" r="4.5" fill="#fff" stroke="#10293b" stroke-width="2"/><text class="labS" x="'+(t.x+a[2])+'" y="'+(t.y+a[3])+'" text-anchor="'+a[4]+'">'+a[1]+'</text>';}).join('');}
 function climb(){const n=seenCount(),f=n/QS.length,pct=Math.round(f*100),s=n>=QS.length?3:n>=16?2:n>=10?1:0;
   document.querySelectorAll('.sky').forEach((e,i)=>e.classList.toggle('on',i===s));
   $('pct').textContent=pct+'%';$('where').textContent=n>=QS.length?'Summit reached':'Climbing: '+STAGES[s].n;
@@ -297,9 +305,9 @@ document.addEventListener('keydown',e=>{if(phase()==='start'||showRes||e.target.
   if(e.key==='ArrowRight')go(S.cur+1);else if(e.key==='ArrowLeft')go(S.cur-1);
   else if(e.key.toLowerCase()==='m')toggleMark(S.cur);
   else if(q.opts&&e.key.length===1&&'abcd'.includes(e.key.toLowerCase()))pick(e.key.toLowerCase());});
-addEventListener('resize',()=>{camps();climb();});
+addEventListener('resize',()=>{camps();campsS();climb();});
 load();
-camps();render();clock();
+camps();campsS();render();clock();
 </script>
 </body>
 </html>
